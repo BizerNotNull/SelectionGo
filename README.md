@@ -1,6 +1,6 @@
 # SelectionGo
 
-Chrome/Edge 插件，基于 Manifest V3。右键选择文本即可通过自定义的搜索方式在一级菜单或“使用其他搜索”二级菜单中搜索。配置内容（名称、URL、菜单层级）保存在 `chrome.storage.sync` 中，支持导入导出。
+Chrome/Edge 插件，基于 Manifest V3。右键选择文本即可通过自定义的搜索方式在一级菜单或“使用其他搜索”二级菜单中搜索。配置内容（名称、URL、菜单层级）保存在 `chrome.storage.sync` 中，支持导入导出配置。
 
 ## 功能
 - 鼠标选择文本后右键弹出的“使用 XX 搜索”一级菜单。
@@ -13,7 +13,7 @@ Chrome/Edge 插件，基于 Manifest V3。右键选择文本即可通过自定�
   - 实时保存配置，无需额外点击“保存配置”。
   - 导入/导出 JSON 配置文件。
   - 切换界面语言（中文 / English）。
-- 搜索 URL 中包含占位符字符串（默认 `SelectionGo`，也支持 `{{query}}`、`{{selection}}`）时会直接替换；若未设置占位符则会自动尝试覆盖常见参数（如 `q`、`keyword`、`wd` 等）。
+- 搜索 URL 中需要包含占位符字符串（默认 `SelectionGo`，也支持 `{{query}}`、`{{selection}}`）（包括两层大括号）时会直接替换。
 
 ## 开发/调试
 1. `chrome://extensions` 或 `edge://extensions` 中打开“开发者模式”。
