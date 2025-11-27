@@ -193,8 +193,20 @@ function createMenu(engine, parentId, strings) {
   });
 }
 
-chrome.contextMenus.onClicked.addListener((info) => {
-  const engine = engineMenuMap[info.menuItemId];
+async function resolveEngineForMenu(menuItemId) {
+  if (engineMenuMap[menuItemId]) {
+    return engineMenuMap[menuItemId];
+  }
+  const engines = await getEngines();
+  const match = engines.find((engine) => `selectiongo-${engine.id}` === menuItemId);
+  if (match) {
+    engineMenuMap[menuItemId] = match;
+  }
+  return match;
+}
+
+chrome.contextMenus.onClicked.addListener(async (info) => {
+  const engine = await resolveEngineForMenu(info.menuItemId);
   if (!engine || !info.selectionText) {
     return;
   }
@@ -220,3 +232,4 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     rebuildContextMenus();
   }
 });
+
