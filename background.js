@@ -214,7 +214,23 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
   if (!targetUrl) {
     return;
   }
-  chrome.tabs.create({ url: targetUrl });
+
+  const createProps = { url: targetUrl };
+
+  // Try to place the new tab immediately to the right of the current tab
+  if (typeof info.tabId === "number") {
+    try {
+      const currentTab = await chrome.tabs.get(info.tabId);
+      if (currentTab && typeof currentTab.index === "number") {
+        createProps.index = currentTab.index + 1;
+        createProps.openerTabId = info.tabId;
+      }
+    } catch {
+      // Ignore failures and fall back to default placement
+    }
+  }
+
+  chrome.tabs.create(createProps);
 });
 
 chrome.runtime.onInstalled.addListener(async () => {
