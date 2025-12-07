@@ -218,16 +218,24 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
   const createProps = { url: targetUrl };
 
   // Try to place the new tab immediately to the right of the current tab
-  if (typeof info.tabId === "number") {
-    try {
-      const currentTab = await chrome.tabs.get(info.tabId);
-      if (currentTab && typeof currentTab.index === "number") {
-        createProps.index = currentTab.index + 1;
-        createProps.openerTabId = info.tabId;
-      }
-    } catch {
-      // Ignore failures and fall back to default placement
+  try {
+    let currentTab = null;
+    if (typeof info.tabId === "number") {
+      currentTab = await chrome.tabs.get(info.tabId);
     }
+
+    if (!currentTab) {
+      const [activeTab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+      currentTab = activeTab;
+    }
+
+    if (currentTab && typeof currentTab.index === "number") {
+      createProps.windowId = currentTab.windowId;
+      createProps.index = currentTab.index + 1;
+      createProps.openerTabId = currentTab.id;
+    }
+  } catch {
+    // Ignore failures and fall back to default placement
   }
 
   chrome.tabs.create(createProps);

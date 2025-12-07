@@ -2,10 +2,11 @@
   "manifest_version": 3,
   "name": "SelectionGo",
   "description": "Right-click selected text to search with customizable providers and menus.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "permissions": [
     "contextMenus",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "background": {
     "service_worker": "background.js"
